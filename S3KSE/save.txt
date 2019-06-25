@@ -1,0 +1,32 @@
+0x180
+
+struct
+{
+   byte unknow; // If set on 0X80 the save will be erased
+   byte unknow;
+   byte character;
+   byte zone;
+   byte unknow;
+   byte unknow;
+   word emeralds;
+   byte lifes;
+   byte continues;
+}
+
+Emeralds definitions:
+0x0001 chs8
+0x0002 spr8
+0x0004 chs7
+0x000C spr7
+0x0010 chs6
+0x0020 spr6
+0x0040 chs5
+0x0080 spr5
+0x0100 chs4
+0x0200 spr4
+0x0400 chs3
+0x0800 spr3
+0x1000 chs2
+0x2000 spr2
+0x4000 chs1
+0x8000 spr1
