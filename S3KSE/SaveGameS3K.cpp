@@ -51,9 +51,7 @@ CORRUPTED:
 	DWORD dwBytesRead; // I hate you -.-
 	ReadFile((HANDLE)hFile, saveBuffer, 0x400, &dwBytesRead, NULL); // Load savegame in RAM
 
-	if (*((LPWORD)(saveBuffer + 0x050)) != 0x4C44 || // Verify the existence of DL
-		*((LPWORD)(saveBuffer + 0x0F0)) != 0x4244 || // DC
-		*((LPWORD)(saveBuffer + 0x1D0)) != 0x4244)   // DC
+	if (*((LPWORD)(saveBuffer + 0x050)) != 0x4C44) // Verify the existence of DL
 	{
 		free(saveBuffer); // If the savegame hasn't pass the test, free memory and
 		goto CORRUPTED; //  go to close the handle etc
