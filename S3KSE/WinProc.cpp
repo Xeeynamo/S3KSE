@@ -469,7 +469,7 @@ LRESULT CALLBACK wndProcMain(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				{
 					if (editingMode == SONIC3K)
 					{
-						if (arrowIndex<4)
+						if (arrowIndex<3)
 						{
 							arrowIndex++;
 							arrowPos1 = (COORD*)getArrowPos[arrowIndex<<1];
@@ -481,12 +481,6 @@ LRESULT CALLBACK wndProcMain(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 						arrowIndex++;
 						arrowPos1 = (COORD*)getArrowPos[arrowIndex<<1];
 						arrowPos2 = (COORD*)getArrowPos[(arrowIndex<<1) + 1];
-					}
-					else if (arrowIndex==1)
-					{
-						arrowIndex++;
-						arrowPos1 = (COORD*)getArrowPos[8];
-						arrowPos2 = (COORD*)getArrowPos[9];
 					}
 				}
 				break;
