@@ -2,6 +2,9 @@
 #include <stdio.h>
 #define SETTINGS 3
 
+const int NativeWindowWidth = 320;
+const int NativeWindowHeight = 224;
+
 WORD _slotX = 14 + 100;
 WORD _slotY = 16;
 
@@ -58,13 +61,26 @@ HBITMAP hTAIcons, hTALevels;
 HBRUSH brushLevelLine;
 HPEN redPen, yellowPen;
 
+enum SizeMode
+{
+	SizeMode_PixelPerfect,
+	SizeMode_Double,
+	SizeMode_Triple
+};
+
+struct Size
+{
+	int Width;
+	int Height;
+};
+
 const LPBYTE arrowValueIndex[] = {&cLevel, &cCharacter, &currentLifes, &currentContinues, &cEnding/*DUMMY*/};
 int arrowIndex;
 COORD *arrowPos1;
 COORD *arrowPos2;
 int setArrow;
 unsigned int contator;
-bool fullSize;
+SizeMode sizeMode;
 bool displayArrow;
 bool displayHelp;
 DWORD threadArrowTick(HWND hWnd)
@@ -84,6 +100,39 @@ DWORD threadArrowTick(HWND hWnd)
 	}
 	return 0;
 }
+
+SizeMode GetRotatedSizeMode(SizeMode sizeMode)
+{
+	switch (sizeMode)
+	{
+	case SizeMode_PixelPerfect:
+		return SizeMode_Double;
+	case SizeMode_Double:
+		return SizeMode_Triple;
+	case SizeMode_Triple:
+		return SizeMode_PixelPerfect;
+	default:
+		return SizeMode_PixelPerfect;
+	}
+}
+
+Size GetWindowSize(SizeMode sizeMode)
+{
+	Size size;
+
+	switch (sizeMode)
+	{
+	case SizeMode_PixelPerfect:
+		return { NativeWindowWidth, NativeWindowHeight };
+	case SizeMode_Double:
+		return { NativeWindowWidth * 2, NativeWindowHeight * 2 };
+	case SizeMode_Triple:
+		return { NativeWindowWidth * 3, NativeWindowHeight * 3 };
+	default:
+		return { NativeWindowWidth, NativeWindowHeight };
+	}
+}
+
 void RefreshEditor(HWND hWnd)
 {
 	if (editingMode == SETTINGS)
@@ -168,12 +217,10 @@ LRESULT CALLBACK wndProcMain(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			displayHelp = true;
 			break;
 		case VK_F4:
-			fullSize = !fullSize;
-			if (fullSize)
-				SetWindowSize(hWnd, 640, 448);
-			else
-				SetWindowSize(hWnd, 320, 224);
-			break;
+		{
+			Size size = GetWindowSize(sizeMode = GetRotatedSizeMode(sizeMode));
+			SetWindowSize(hWnd, size.Width, size.Height);
+		}
 		case 0x31: case 0x32: case 0x33: case 0x34: case 0x35: case 0x36: case 0x37: case 0x38:
 		case 0x61: case 0x62: case 0x63: case 0x64: case 0x65: case 0x66: case 0x67: case 0x68:
 		{
@@ -592,13 +639,17 @@ LRESULT CALLBACK wndProcMain(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		}
 		PrintText(hFont, "S3KSE 0.6 25/09/10 DEVELOPED BY XEEYNAMO", 0, 216);
 		
-		if (fullSize)
+		if (sizeMode != SizeMode_PixelPerfect)
 		{
-			StretchBlt(hDC, 0, 0, 640, 448, hDC, 0, 0, 320, 224, SRCCOPY);
-			BitBlt(hMainDC, 0, 0, 640, 448, hDC, 0, 0, SRCCOPY);
+			Size size = GetWindowSize(sizeMode);
+			StretchBlt(hDC, 0, 0, size.Width, size.Height, hDC, 0, 0, NativeWindowWidth, NativeWindowHeight, SRCCOPY);
+			BitBlt(hMainDC, 0, 0, size.Width, size.Height, hDC, 0, 0, SRCCOPY);
 		}
 		else
-			BitBlt(hMainDC, 0, 0, 320, 224, hDC, 0, 0, SRCCOPY);
+		{
+			BitBlt(hMainDC, 0, 0, NativeWindowWidth, NativeWindowHeight, hDC, 0, 0, SRCCOPY);
+		}
+
 		DeleteObject(backBuffer);
 		DeleteDC(hDC);
 		EndPaint(hWnd, &ps);
