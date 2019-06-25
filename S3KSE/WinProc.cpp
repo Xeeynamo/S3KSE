@@ -80,7 +80,7 @@ COORD *arrowPos1;
 COORD *arrowPos2;
 int setArrow;
 unsigned int contator;
-SizeMode sizeMode;
+SizeMode sizeMode = SizeMode_Triple;
 bool displayArrow;
 bool displayHelp;
 DWORD threadArrowTick(HWND hWnd)
@@ -676,7 +676,8 @@ LRESULT CALLBACK wndProcMain(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		redPen = CreatePen(PS_SOLID, 1, RGB(136, 34, 0));
 		yellowPen = CreatePen(PS_SOLID, 2, RGB(238, 238, 0));
 
-		SetWindowSize(hWnd, 320, 224);
+		Size size = GetWindowSize(sizeMode);
+		SetWindowSize(hWnd, size.Width, size.Height);
 		DWORD thID;
 		CreateThread(0, 0, (LPTHREAD_START_ROUTINE)threadArrowTick, hWnd, 0, &thID);
 		break;
