@@ -632,12 +632,12 @@ LRESULT CALLBACK wndProcMain(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			PrintText(hFont, "ESCAPE    LEAVE FROM THIS GUIDE OR" , 16, 128);
 			PrintText(hFont, "          GET OUT FROM THE EDITOR"  , 16, 136);
 			
-			PrintText(hFont, "VERSION 0.6 BETA", 16, 160);
-			PrintText(hFont, "COMPILED ON 25/SEPTEMBER/2010", 16, 168);
+			PrintText(hFont, "VERSION 0.6.1", 16, 160);
+			PrintText(hFont, "COMPILED ON 25 JUNE 2019", 16, 168);
 			PrintText(hFont, "DEVELOPED BY XEEYNAMO", 16, 176);
-			PrintText(hFont, "HTTP://DIGITALWORK.ALTERVISTA.ORG", 16, 184);
+			PrintText(hFont, "HTTPS://XEEYNAMO.GITHUB.IO/S3KSE", 16, 184);
 		}
-		PrintText(hFont, "S3KSE 0.6 25/09/10 DEVELOPED BY XEEYNAMO", 0, 216);
+		PrintText(hFont, "DEVELOPED BY XEEYNAMO", 0, 216);
 		
 		if (sizeMode != SizeMode_PixelPerfect)
 		{
